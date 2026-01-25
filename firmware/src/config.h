@@ -1,6 +1,6 @@
 #pragma once
 
-#define PROJECT_VER "1.15"
+#define PROJECT_VER "1.16"
 #define PROJECT_NAME "Часы Пинг-Понг🎾"
 #define PROJECT_URL "/SinicinDenis/rtc_ballclock_2026/main/project.json"
 

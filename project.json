@@ -5,10 +5,10 @@
   "notes": "Релиз",
   "builds": [
     {
-      "chipFamily": "ESP8266",
+      "chipFamily": "ESP32",
       "parts": [
         {
-          "path": "https://raw.githubusercontent.com/AlexGyver/BallClock/main/bin/firmware.bin",
+          "path": "https://raw.githubusercontent.com/SinicinDenis/rtc_ballclock_2026/main/bin/firmware.bin",
           "offset": 0
         }
       ]

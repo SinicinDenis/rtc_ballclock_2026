@@ -2,7 +2,7 @@
 
 #define PROJECT_VER "1.15"
 #define PROJECT_NAME "Часы Пинг-Понг🎾"
-#define PROJECT_URL "AlexGyver/BallClock/main/project.json"
+#define PROJECT_URL "/SinicinDenis/rtc_ballclock_2026/main/project.json"
 
 #define LED_PIN 32
 #define PHOTO_PIN 33

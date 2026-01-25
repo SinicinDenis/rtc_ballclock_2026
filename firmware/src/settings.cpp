@@ -181,7 +181,13 @@ static void build(sets::Builder& b) {
                 Looper.pushEvent("wifi_connect");
             }
             if (b.Button("Обновление")) {
-                if (ota.checkUpdate()) {Serial.println("Есть обновление");};
+                if (ota.checkUpdate()) {
+                    Serial.println("Есть обновление");
+                } else {
+                    Serial.println("Нет обновлений");
+                    ota.updateNow();
+                    Serial.println(ota.version());
+                }
             }
         }
     }

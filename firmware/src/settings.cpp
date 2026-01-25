@@ -180,6 +180,9 @@ static void build(sets::Builder& b) {
             if (b.Button("wifi_save"_h, "Подключить")) {
                 Looper.pushEvent("wifi_connect");
             }
+            if (b.Button("Обновление")) {
+                ota.checkUpdate();
+            }
         }
     }
     {

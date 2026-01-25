@@ -51,15 +51,15 @@ static void update(sets::Updater& u) {
     //}
     
     
-    Serial.println(time_rtc.gettime("H:i:s"));
+    //Serial.println(time_rtc.gettime("H:i:s"));
     //Serial.println(NTP.timeToString());
-    Serial.println(WiFi.localIP());
+    //Serial.println(WiFi.localIP());
 
     // Установка времени вручную ЧАС
     
     
     if (db[kk::rtc_set_h] != 0 && db[kk::rtc_set_m] == 0) {
-        Serial.print("Час ");
+        Serial.print("Час !!");
         Serial.println(db[kk::rtc_set_h]);
         time_rtc.settime(time_rtc.seconds,time_rtc.minutes,db[kk::rtc_set_h].toInt(),25,1,2025,1);
         db[kk::rtc_set_h] = 0;
@@ -152,7 +152,6 @@ static void build(sets::Builder& b) {
 
             if (db[kk::time_ntp]) {
 
-                Serial.println("Час");
                 b.Input(kk::ntp_gmt, "Часовой пояс");
                 b.Input(kk::ntp_host, "NTP сервер");
                 b.LED("synced"_h, "Синхронизирован", NTP.synced());
@@ -180,15 +179,7 @@ static void build(sets::Builder& b) {
             if (b.Button("wifi_save"_h, "Подключить")) {
                 Looper.pushEvent("wifi_connect");
             }
-            if (b.Button("Обновление")) {
-                if (ota.checkUpdate()) {
-                    Serial.println("Есть обновление");
-                } else {
-                    Serial.println("Нет обновлений");
-                    ota.updateNow();
-                    Serial.println(ota.version());
-                }
-            }
+
         }
     }
     {

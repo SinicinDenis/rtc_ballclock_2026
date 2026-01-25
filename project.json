@@ -8,7 +8,7 @@
       "chipFamily": "ESP32",
       "parts": [
         {
-          "path": "https://raw.githubusercontent.com/SinicinDenis/rtc_ballclock_2026/main/bin/firmware.bin",
+          "path": "https://github.com/SinicinDenis/rtc_ballclock_2026/blob/main/bin/firmware.bin",
           "offset": 0
         }
       ]

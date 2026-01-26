@@ -116,13 +116,13 @@ static void build(sets::Builder& b) {
     }
     {
         sets::Group g(b, "Яркость");
-        if (db[kk::auto_bright] == false) {b.Slider(kk::bright, "Яркость", 0, 255);}
+        if (db[kk::auto_bright] == false) {b.Slider(kk::bright, "Яркость", 0, 180);}
         if (b.Switch(kk::auto_bright, "Автояркость")) b.reload();
 
         if (db[kk::auto_bright]) {
             b.Label("adc_val"_h, "Сигнал с датчика");
-            b.Slider(kk::bright_min, "Мин.", 0, 255);
-            b.Slider(kk::bright_max, "Макс.", 0, 255);
+            b.Slider(kk::bright_min, "Мин.", 0, 180);
+            b.Slider(kk::bright_max, "Макс.", 0, 180);
 
             {
                 sets::Buttons bt(b);

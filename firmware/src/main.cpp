@@ -14,6 +14,7 @@ iarduino_RTC time_rtc(RTC_DS3231);
 #include "matrix.h"
 #include "settings.h"
 
+
 String str_proverka = "";
 
 void runString(String str) {
@@ -37,7 +38,7 @@ void runString(String str) {
 void setup() {
     Serial.begin(115200);
     Serial.println("\n" PROJECT_NAME " v" PROJECT_VER);
-
+    
     matrix.begin();
     time_rtc.begin(&WIRE1);
     

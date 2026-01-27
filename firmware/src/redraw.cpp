@@ -229,24 +229,24 @@ static void drawClock() {
             //dots(9, 9);
             break;
         case 4:
-                //matrix.setFont(font_4x5);
-                matrix.setFont(font_3x5);
+            //matrix.setFont(font_4x5);
+            matrix.setFont(font_3x5);
 
-                if (dt.hour >= 10) {
-                    matrix.setCursor(1, 1);
-                    matrix.print(dt.hour / 10);
-                }
-                matrix.setCursor(5, 1);
-                matrix.print(dt.hour % 10);
+            if (dt.hour >= 10) {
+                matrix.setCursor(1, 1);
+                matrix.print(dt.hour / 10);
+            }
+            matrix.setCursor(5, 1);
+            matrix.print(dt.hour % 10);
 
-                matrix.setCursor(11, 1);
-                matrix.print(dt.minute / 10);
-                matrix.setCursor(15, 1);
-                matrix.print(dt.minute % 10);
+            matrix.setCursor(11, 1);
+            matrix.print(dt.minute / 10);
+            matrix.setCursor(15, 1);
+            matrix.print(dt.minute % 10);
 
-                //dots(9, 10);
-                dots(9, 9);
-                break;
+            //dots(9, 10);
+            dots(9, 9);
+            break;
     }
 }
 

@@ -8,7 +8,13 @@ TwoWire WIRE1 (0);
 #include <iarduino_RTC.h>
 #include <iarduino_I2C_Software.h>	
 
+
 iarduino_RTC time_rtc(RTC_DS3231);
+
+//iarduino_RTC time_rtc(RTC_DS1302, 25, 27, 26);  //DS1302, RST, CLK, DAT.
+
+
+
 #include <GyverNTP.h>
 #include "config.h"
 #include "matrix.h"

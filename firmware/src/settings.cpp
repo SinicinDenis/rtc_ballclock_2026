@@ -195,9 +195,9 @@ static void build(sets::Builder& b) {
             Serial.println((int)ota.getError());
             Serial.println(ota.version());
             ota.tick();
-            //if (ota.checkUpdate()) {
-            //    ota.update();
-            //    }
+            if (ota.checkUpdate()) {
+                ota.update();
+                }
             }
         
     }

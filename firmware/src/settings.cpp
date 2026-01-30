@@ -17,7 +17,7 @@
 
 extern iarduino_RTC time_rtc;
 
-AutoOTA ota(PROJECT_VER, PROJECT_URL);
+AutoOTA ota(PROJECT_VER, "https://raw.githubusercontent.com/SinicinDenis/rtc_ballclock_2026/main/project.json");
 
 GyverDBFile db(&LittleFS, "/data.db");
 
@@ -188,6 +188,20 @@ static void build(sets::Builder& b) {
         b.Input(kk::run_str_in, "Ввод строки");
         
     }
+
+        {
+        sets::Group g(b, "Обновление по Wifi");
+        if (b.Button("Проверить обновления")) {
+            Serial.println((int)ota.getError());
+            Serial.println(ota.version());
+            ota.tick();
+            //if (ota.checkUpdate()) {
+            //    ota.update();
+            //    }
+            }
+        
+    }
+
     if (b.Confirm("ota_update"_h)) {
         if (b.build.value.toBool()) {
             Serial.println("OTA update!");
@@ -272,7 +286,7 @@ LP_TICKER([]() {
 
     WiFiConnector.tick();
     sett.tick();
-    //ota.tick();
+    ota.tick();
     NTP.tick();
     db.tick();
 });

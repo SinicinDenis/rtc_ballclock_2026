@@ -41,18 +41,6 @@ static void update(sets::Updater& u) {
         } 
         
     }
-
-    //if (db[kk::run_str_]) {
-    //    runString(db[kk::run_str_in]);
-    //}
-    
-    
-    //Serial.println(time_rtc.gettime("H:i:s"));
-    //Serial.println(NTP.timeToString());
-    //Serial.println(WiFi.localIP());
-
-    // Установка времени вручную ЧАС
-    
     
     if (db[kk::rtc_set_h] != 0 && db[kk::rtc_set_m] == 0) {
         Serial.print("Час !!");
@@ -75,7 +63,7 @@ static void update(sets::Updater& u) {
         db[kk::rtc_set_h] = 0;
     }
     db.update();
-    //if (ota.hasUpdate()) u.update("ota_update"_h, F("Доступно обновление. Обновить прошивку?"));
+    if (ota.hasUpdate()) u.update("ota_update"_h, F("Доступно обновление. Обновить прошивку?"));
 
     Looper.getTimer("redraw")->restart(100);
 }

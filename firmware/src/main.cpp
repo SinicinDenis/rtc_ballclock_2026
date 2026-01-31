@@ -29,7 +29,17 @@ void runString(String str) {
     matrix.setModeDiag();
     run.setSpeed(10);
     run.setWindow(0, matrix.width(), 1);
-    run.setColor24(db[kk::clock_color]);
+    Serial.println(db[kk::clock_color]);
+    if (db[kk::clock_color] == 0) {
+        run.setColor24(16777215);
+        //Serial.println("yes");
+    } else {
+        //Serial.println("no");
+        run.setColor24(db[kk::clock_color]);
+        
+    }
+    Serial.println(db[kk::clock_color]);
+    
     run.setFont(gfx_font_3x5);
     run.setText(str);
     run.start();

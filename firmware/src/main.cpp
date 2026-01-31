@@ -47,6 +47,7 @@ void setup() {
     
     matrix.begin();
     time_rtc.begin(&WIRE1);
+    time_rtc.gettime();
     
     WiFiConnector.setName(PROJECT_NAME);
 
@@ -67,6 +68,7 @@ void setup() {
         String str("noWifi");
         //str += WiFi.softAPSSID();
         Serial.println(str);
+
         runString(str);
     });
 

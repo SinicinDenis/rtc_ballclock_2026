@@ -10,12 +10,13 @@
 #include "config.h"
 #include "palettes.h"
 #include "redraw.h"
+//#include "matrix.h"
 
 
-//#include "main.cpp"
-
-
+extern uint8_t xyToLed;
+//extern BallMatrix matrix;
 extern iarduino_RTC time_rtc;
+
 
 AutoOTA ota(PROJECT_VER, "https://raw.githubusercontent.com/SinicinDenis/rtc_ballclock_2026/main/project.json");
 
@@ -197,6 +198,7 @@ static void build(sets::Builder& b) {
             ota.tick();
             if (ota.checkUpdate()) {
                 ota.update();
+                
                 }
             }
         
@@ -206,6 +208,7 @@ static void build(sets::Builder& b) {
         if (b.build.value.toBool()) {
             Serial.println("OTA update!");
             ota.update();
+            
         }
     }
 
@@ -265,15 +268,15 @@ LP_TICKER([]() {
         db.init(kk::night_color, 0xff0000);
         db.init(kk::night_trsh, 50);
 
-        db.init(kk::clock_style, 1);
+        db.init(kk::clock_style, 3);
         db.init(kk::clock_color, 0xffffff);
 
         db.init(kk::back_mode, 1);
-        db.init(kk::back_pal, 0);
+        db.init(kk::back_pal, 10);
         db.init(kk::back_bright, 200);
         db.init(kk::back_speed, 50);
         db.init(kk::back_scale, 50);
-        db.init(kk::back_angle, 0);
+        db.init(kk::back_angle, 60);
 
         WiFiConnector.connect(db[kk::wifi_ssid], db[kk::wifi_pass]);
         sett.begin();

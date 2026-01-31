@@ -106,6 +106,15 @@ static void drawClock() {
     matrix.setModeDiag();
 
     if (!NTP.synced()) {
+        time_rtc.gettime();
+        //Serial.print("NTP не синх ");
+        //Serial.println(NTP.synced());
+        Datime dt(time_rtc.year, time_rtc.month,time_rtc.day,time_rtc.Hours,time_rtc.minutes, time_rtc.seconds);
+        //Serial.print(dt.hour);
+        //Serial.print(":");
+        //Serial.print(dt.minute);
+        //Serial.print(":");
+        //Serial.println(dt.second);
         //Serial.println(time_rtc.gettime("H:i:s"));
         switch (db[kk::clock_style].toInt()) {
             case 1:
@@ -178,75 +187,81 @@ static void drawClock() {
         }
         return;
     }
+    
+    
 
-    Datime dt(NTP);
+    if (NTP.synced()) {
+        Serial.print("NTP ");
+        Serial.println(NTP.synced());
+        Datime dt(NTP);
+        Serial.println(dt.toString());
+        switch (db[kk::clock_style].toInt()) {
+            case 1:
+                matrix.setFont(gfx_font_3x5);
 
-    switch (db[kk::clock_style].toInt()) {
-        case 1:
-            matrix.setFont(gfx_font_3x5);
-
-            matrix.setCursor(1, 1);
-            if (dt.hour < 10) matrix.print(' ');
-            matrix.print(dt.hour);
-
-            matrix.setCursor(11, 1);
-            if (dt.minute < 10) matrix.print(0);
-            matrix.print(dt.minute);
-
-            dots(9, 9);
-            break;
-
-        case 2:
-            matrix.setFont(font_3x5_diag);
-
-            matrix.setCursor(1, 1);
-            if (dt.hour < 10) matrix.print(' ');
-            matrix.print(dt.hour);
-
-            matrix.setCursor(11, 1);
-            if (dt.minute < 10) matrix.print(0);
-            matrix.print(dt.minute);
-
-            dots(9, 9);
-            break;
-
-        case 3:
-            matrix.setFont(font_4x5);
-            //matrix.setFont(font_3x5);
-            if (dt.hour >= 10) {
                 matrix.setCursor(1, 1);
-                matrix.print(dt.hour / 10);
-            }
-            matrix.setCursor(5, 1);
-            matrix.print(dt.hour % 10);
+                if (dt.hour < 10) matrix.print(' ');
+                matrix.print(dt.hour);
 
-            matrix.setCursor(11, 1);
-            matrix.print(dt.minute / 10);
-            matrix.setCursor(15, 1);
-            matrix.print(dt.minute % 10);
+                matrix.setCursor(11, 1);
+                if (dt.minute < 10) matrix.print(0);
+                matrix.print(dt.minute);
 
-            dots(9, 10);
-            //dots(9, 9);
-            break;
-        case 4:
-            //matrix.setFont(font_4x5);
-            matrix.setFont(font_3x5);
+                dots(9, 9);
+                break;
 
-            if (dt.hour >= 10) {
+            case 2:
+                matrix.setFont(font_3x5_diag);
+
                 matrix.setCursor(1, 1);
-                matrix.print(dt.hour / 10);
-            }
-            matrix.setCursor(5, 1);
-            matrix.print(dt.hour % 10);
+                if (dt.hour < 10) matrix.print(' ');
+                matrix.print(dt.hour);
 
-            matrix.setCursor(11, 1);
-            matrix.print(dt.minute / 10);
-            matrix.setCursor(15, 1);
-            matrix.print(dt.minute % 10);
+                matrix.setCursor(11, 1);
+                if (dt.minute < 10) matrix.print(0);
+                matrix.print(dt.minute);
 
-            //dots(9, 10);
-            dots(9, 9);
-            break;
+                dots(9, 9);
+                break;
+
+            case 3:
+                matrix.setFont(font_4x5);
+                //matrix.setFont(font_3x5);
+                if (dt.hour >= 10) {
+                    matrix.setCursor(1, 1);
+                    matrix.print(dt.hour / 10);
+                }
+                matrix.setCursor(5, 1);
+                matrix.print(dt.hour % 10);
+
+                matrix.setCursor(11, 1);
+                matrix.print(dt.minute / 10);
+                matrix.setCursor(15, 1);
+                matrix.print(dt.minute % 10);
+
+                dots(9, 10);
+                //dots(9, 9);
+                break;
+            case 4:
+                //matrix.setFont(font_4x5);
+                matrix.setFont(font_3x5);
+
+                if (dt.hour >= 10) {
+                    matrix.setCursor(1, 1);
+                    matrix.print(dt.hour / 10);
+                }
+                matrix.setCursor(5, 1);
+                matrix.print(dt.hour % 10);
+
+                matrix.setCursor(11, 1);
+                matrix.print(dt.minute / 10);
+                matrix.setCursor(15, 1);
+                matrix.print(dt.minute % 10);
+
+                //dots(9, 10);
+                dots(9, 9);
+                break;
+        }
     }
 }
 

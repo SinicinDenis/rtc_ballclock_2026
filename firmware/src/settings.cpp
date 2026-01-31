@@ -88,7 +88,7 @@ static void build(sets::Builder& b) {
 
         if (db[kk::fon_setup]) {
 
-            if (b.Select(kk::back_mode, "Фон", "Нет;Градиент;Перлин")) b.reload();
+            if (b.Select(kk::back_mode, "Фон", "Нет;Градиент;Перлин;Тест")) b.reload();
 
             if (db[kk::back_mode].toInt()) {
                 b.Select(kk::back_pal, "Палитра", getPaletteList());
@@ -119,9 +119,7 @@ static void build(sets::Builder& b) {
     }
     {
         sets::Group g(b, "Ночной режим");
-
         if (b.Switch(kk::night_mode, "Включен")) b.reload();
-
         if (db[kk::night_mode]) {
             b.Color(kk::night_color, "Цвет");
             b.Slider(kk::night_trsh, "Порог", 0, 1023);
@@ -131,30 +129,21 @@ static void build(sets::Builder& b) {
         sets::Group g(b, "Время");
         if (b.Switch(kk::cl_menu, "Время ⚙️")) b.reload();
         if (db[kk::cl_menu]) {
-
             if (b.Switch(kk::time_ntp, "Время из интернета")) b.reload();
-            //b.Label("adc_val"_h, "Сигнал с датчика");
-
             if (db[kk::time_ntp]) {
-
                 b.Input(kk::ntp_gmt, "Часовой пояс");
                 b.Input(kk::ntp_host, "NTP сервер");
                 b.LED("synced"_h, "Синхронизирован", NTP.synced());
                 b.Label("local_time"_h, "Интернет время", NTP.timeToString());
-
             } else {
-                
                 b.Label("local_time"_h,"Внутреннее время", time_rtc.gettime("H:i:s"));
-                //Serial.println(time_rtc.gettime("H:i:s"));
                 b.Input(kk::rtc_set_h, "Установить Час");
                 b.Input(kk::rtc_set_m, "Установить Минуты");
                 b.LED("synced"_h, "Синхронизирован", NTP.synced());
-                
             }
         }
     }
     {   
-        
         sets::Group g(b, "WiFi");
         if (b.Switch(kk::wifi_setup, "WiFi ⚙️ ")) b.reload();
         if (db[kk::wifi_setup]) {
@@ -164,16 +153,13 @@ static void build(sets::Builder& b) {
             if (b.Button("wifi_save"_h, "Подключить")) {
                 Looper.pushEvent("wifi_connect");
             }
-
         }
     }
     {
         sets::Group g(b, "Бегущая строка");
         if (b.Switch(kk::run_str_, " Запуск Строки ▶")) b.reload();
         b.Input(kk::run_str_in, "Ввод строки");
-        
     }
-
         {
         sets::Group g(b, "Обновление по Wifi");
         if (b.Button("Проверить обновления")) {
@@ -185,26 +171,20 @@ static void build(sets::Builder& b) {
                 
                 }
             }
-        
     }
-
     if (b.Confirm("ota_update"_h)) {
         if (b.build.value.toBool()) {
             Serial.println("OTA update!");
             ota.update();
-            
         }
     }
-
     if (b.build.isAction()) {
         switch (b.build.id) {
             case kk::ntp_gmt: NTP.setGMT(b.build.value); break;
             case kk::ntp_host: NTP.setHost(b.build.value); break;
         }
     }
-
     Looper.getTimer("redraw")->restart(100);
-    // if (b.Button("restart"_h, "restart")) ESP.restart();
 }
 
 LP_LISTENER_("wifi_connect", []() {
@@ -216,8 +196,6 @@ LP_TICKER([]() {
     if (Looper.thisSetup()) {
         LittleFS.begin(true);
         db.begin();
-
-
         db.init(kk::rtc_set_h, time_rtc.Hours);//Переменная для установки времени Час
         db.init(kk::rtc_set_m, time_rtc.minutes);//Переменная для установки времени Минуты
         db.init(kk::fon_setup, false);//переменная фон для меню
@@ -230,31 +208,22 @@ LP_TICKER([]() {
         db.init(kk::wifi_ssid, "");
         db.init(kk::wifi_pass, "");
         db.init(kk::show_ip, true);
-
         db.init(kk::run_str_, false);
         db.init(kk::run_str_in, "");
         db.init(kk::run_str_speed, 1);//переменная для скорости смена цвета часов
-
-
         db.init(kk::ntp_host, "pool.ntp.org");
         db.init(kk::ntp_gmt, 3);
-
         db.init(kk::bright, 100);
         db.init(kk::auto_bright, false);
         db.init(kk::bright_min, 10);
         db.init(kk::bright_max, 255);
         db.init(kk::adc_min, 0);
         db.init(kk::adc_max, 1023);
-
         db.init(kk::night_mode, false);
-        
-        
         db.init(kk::night_color, 0xff0000);
         db.init(kk::night_trsh, 50);
-
         db.init(kk::clock_style, 3);
         db.init(kk::clock_color, 0xffffff);
-
         db.init(kk::back_mode, 1);
         db.init(kk::back_pal, 10);
         db.init(kk::back_bright, 200);
@@ -262,16 +231,13 @@ LP_TICKER([]() {
         db.init(kk::back_scale, 50);
         db.init(kk::back_angle, 60);
         db.init(kk::reverse_matrix, 0);
-
         WiFiConnector.connect(db[kk::wifi_ssid], db[kk::wifi_pass]);
         sett.begin();
         sett.onBuild(build);
         sett.onUpdate(update);
-
         NTP.setHost(db[kk::ntp_host]);
         NTP.setGMT(db[kk::ntp_gmt]);
     }
-
     WiFiConnector.tick();
     sett.tick();
     ota.tick();
@@ -279,9 +245,6 @@ LP_TICKER([]() {
     db.tick();
 });
 
-//LP_TIMER(24ul * 60 * 60 * 1000, []() {
-//    ota.checkUpdate();
-//});
 byte rr=255, gg=255, bb=255;
 int jj=0;
 
@@ -311,15 +274,11 @@ long koleso() {
     return long((rr << 16) | (gg << 8) | (bb));
 }
 
-
-
 LP_TIMER(50, []() {
         if (db[kk::clock_random]) {
             db[kk::clock_color] = koleso();
         }
 });
-
-
 // LP_TIMER(1000, []() {
 //     Serial.println(ESP.getFreeHeap());
 // });

@@ -19,6 +19,8 @@ extern iarduino_RTC time_rtc;
 
 ADCFilt photo(PHOTO_PIN, 14);
 
+//gfxicon_t icon_my[] PROGMEM = {0x92, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x92};
+
 struct GradData {
     GradData(int x0, int y0, int w, int h, int angle) {
         uint16_t hypot = sqrt(w * w + h * h) / 2;
@@ -133,11 +135,9 @@ static void drawClock() {
 
             case 2:
                 matrix.setFont(font_3x5_diag);
-
                 matrix.setCursor(1, 1);
                 if (time_rtc.Hours < 10) matrix.print(' ');
                 matrix.print(time_rtc.Hours);
-
                 matrix.setCursor(11, 1);
                 if (time_rtc.minutes < 10) matrix.print(0);
                 matrix.print(time_rtc.minutes);
@@ -310,6 +310,12 @@ static void drawBack() {
             //break;
             }
             break;
+        //case 3:
+        //    matrix.setModeXY();
+        //    matrix.setCursor(1,1);
+        //    matrix.drawIcon(icon_my);
+        //    //matrix.drawBitmap(3,3, gfx_icon::android);
+        //    break;
     }
 }
 

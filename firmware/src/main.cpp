@@ -54,16 +54,12 @@ void runString(String str) {
 void setup() {
     Serial.begin(115200);
     Serial.println("\n" PROJECT_NAME " v" PROJECT_VER);
-    
     matrix.begin();
     time_rtc.begin(&WIRE1);
     time_rtc.gettime();
-    
     WiFiConnector.setName(PROJECT_NAME);
-
     WiFiConnector.onConnect([]() {
         NTP.begin();
-
         Serial.print("Connected: ");
         Serial.println(WiFi.localIP());
         if (db[kk::show_ip]) runString(WiFi.localIP().toString());
@@ -82,31 +78,18 @@ void setup() {
         runString(str);
     });
 
-
     LP_TIMER(1111, []() {
        if (db[kk::run_str_]) {
         if (db[kk::run_str_in].length() > 3) {
             str_proverka = db[kk::run_str_in].toString();
             str_proverka.replace("\n", " ");
-            //db[kk::run_str_in] = db[kk::run_str_in].replace("\n", "");
             runString(str_proverka);
-            
         }
-        
         db[kk::run_str_] = false;
-        //db[kk::run_str_in] = "";
     }
-    });
-    
+    });    
 }
 
-
-
 void loop() {
-    
-    //Serial.println("Основной loop");
     Looper.loop();
-
-    
-    
 }

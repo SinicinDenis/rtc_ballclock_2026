@@ -191,10 +191,10 @@ static void drawClock() {
     
 
     if (NTP.synced()) {
-        Serial.print("NTP ");
-        Serial.println(NTP.synced());
+        //Serial.print("NTP ");
+        //Serial.println(NTP.synced());
         Datime dt(NTP);
-        Serial.println(dt.toString());
+        //Serial.println(dt.toString());
         switch (db[kk::clock_style].toInt()) {
             case 1:
                 matrix.setFont(gfx_font_3x5);

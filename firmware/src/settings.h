@@ -49,5 +49,6 @@ DB_KEYS(
     clock_random,
     run_str_,
     run_str_in,
-    run_str_speed
+    run_str_speed,
+    reverse_matrix
 );

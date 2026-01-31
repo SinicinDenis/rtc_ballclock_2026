@@ -10,11 +10,6 @@
 #include "config.h"
 #include "palettes.h"
 #include "redraw.h"
-//#include "matrix.h"
-
-
-extern uint8_t xyToLed;
-//extern BallMatrix matrix;
 extern iarduino_RTC time_rtc;
 
 
@@ -41,7 +36,7 @@ static void update(sets::Updater& u) {
     u.update("synced"_h, NTP.synced());
     if (NTP.synced()) {
         if (millis() % 10000 > 9000) {
-            //Serial.println('Установка времени rtc');
+            Serial.println("Установка времени rtc");
             time_rtc.settime(NTP.second(), NTP.minute(), NTP.hour(), NTP.day(), NTP.month(), NTP.year(), NTP.weekDay());
         } 
         
@@ -95,6 +90,7 @@ static void build(sets::Builder& b) {
             b.Color(kk::clock_color, "Цвет");
             b.Switch(kk::clock_random, "Случайный цвет");
             b.Slider(kk::run_str_speed, "Скорость", 1, 5);
+            b.Slider(kk::reverse_matrix, "Разворот", 0, 3);
             
         }
     }
@@ -277,6 +273,7 @@ LP_TICKER([]() {
         db.init(kk::back_speed, 50);
         db.init(kk::back_scale, 50);
         db.init(kk::back_angle, 60);
+        db.init(kk::reverse_matrix, 0);
 
         WiFiConnector.connect(db[kk::wifi_ssid], db[kk::wifi_pass]);
         sett.begin();

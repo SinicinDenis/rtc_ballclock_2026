@@ -10,6 +10,7 @@
 #include "font_3x5_diag.h"
 #include "font_4x5.h"
 #include "font_my.h"
+#include "font_vert.h"
 #include "matrix.h"
 #include "palettes.h"
 #include "settings.h"
@@ -63,20 +64,23 @@ static void dots(int x1, int x2) {
     uint32_t color = matrix.getColor24();
     uint32_t color1 = matrix.getLED(x1, 2);
     uint32_t color2 = matrix.getLED(x2, 4);
+    if (db[kk::reverse_matrix] < 2) {
+        color1 = matrix.getLED(x1, 2);
+        color2 = matrix.getLED(x2, 4);
+    } else {
+        color1 = matrix.getLED(x1, 10);
+    }
+    
     uint16_t ms = NTP.ms();// = millis() % 1000;
 
     switch(NTP.synced()) {
         case 0:
             ms = millis() % 1000;
-            //Serial.println("Case 0");
             break;
         case 1:
             ms = NTP.ms();
-            //Serial.println("Case 1");
             break;
     }
-
-    //Serial.println(NTP.synced());
 
     switch (ms) {
         case 0 ... DOT_FADE_PRD - 1:
@@ -96,43 +100,43 @@ static void dots(int x1, int x2) {
         default:
             break;
     }
-
-    matrix.setLED(x1, 2, color1);
-    matrix.setLED(x2, 4, color2);
+    if (db[kk::reverse_matrix] < 2) {
+        matrix.setLED(x1, 2, color1);
+        matrix.setLED(x2, 4, color2);
+    } else {
+        matrix.setLED(x1, 10, color1);
+        
+    }
+    
 }
 
 static void drawClock() {
     uint8_t font = db[kk::clock_style].toInt();
     if (!font) return;
-
-    matrix.setModeDiag();
+    if (db[kk::reverse_matrix] < 2) {
+        matrix.setModeDiag(20, 7);
+    } else {
+        matrix.setModeDiag(7, 20);
+    }
+    
 
     if (!NTP.synced()) {
         time_rtc.gettime();
-        //Serial.print("NTP не синх ");
-        //Serial.println(NTP.synced());
         Datime dt(time_rtc.year, time_rtc.month,time_rtc.day,time_rtc.Hours,time_rtc.minutes, time_rtc.seconds);
-        //Serial.print(dt.hour);
-        //Serial.print(":");
-        //Serial.print(dt.minute);
-        //Serial.print(":");
-        //Serial.println(dt.second);
-        //Serial.println(time_rtc.gettime("H:i:s"));
-        switch (db[kk::clock_style].toInt()) {
+        switch (db[kk::reverse_matrix].toInt())
+        {
+        case 0 ... 1:
+            switch (db[kk::clock_style].toInt()) {
             case 1:
                 matrix.setFont(gfx_font_3x5);
-
                 matrix.setCursor(1, 1);
                 if (time_rtc.Hours < 10) matrix.print(' ');
                 matrix.print(time_rtc.Hours);
-
                 matrix.setCursor(11, 1);
                 if (time_rtc.minutes < 10) matrix.print(0);
                 matrix.print(time_rtc.minutes);
-
                 dots(9, 9);
                 break;
-
             case 2:
                 matrix.setFont(font_3x5_diag);
                 matrix.setCursor(1, 1);
@@ -141,124 +145,116 @@ static void drawClock() {
                 matrix.setCursor(11, 1);
                 if (time_rtc.minutes < 10) matrix.print(0);
                 matrix.print(time_rtc.minutes);
-
                 dots(9, 9);
                 break;
-
             case 3:
                 matrix.setFont(font_4x5);
-                //matrix.setFont(font_3x5);
-
                 if (time_rtc.Hours >= 10) {
                     matrix.setCursor(1, 1);
                     matrix.print(time_rtc.Hours / 10);
                 }
                 matrix.setCursor(5, 1);
                 matrix.print(time_rtc.Hours % 10);
-
                 matrix.setCursor(11, 1);
                 matrix.print(time_rtc.minutes / 10);
                 matrix.setCursor(15, 1);
                 matrix.print(time_rtc.minutes % 10);
-
                 dots(9, 10);
-                //dots(9, 9);
                 break;
             
             case 4:
-                //matrix.setFont(font_4x5);
                 matrix.setFont(font_3x5);
-
                 if (time_rtc.Hours >= 10) {
                     matrix.setCursor(1, 1);
                     matrix.print(time_rtc.Hours / 10);
                 }
                 matrix.setCursor(5, 1);
                 matrix.print(time_rtc.Hours % 10);
-
                 matrix.setCursor(11, 1);
                 matrix.print(time_rtc.minutes / 10);
                 matrix.setCursor(15, 1);
                 matrix.print(time_rtc.minutes % 10);
-
-                //dots(9, 10);
                 dots(9, 9);
                 break;
         }
+            break;
+        
+        case 2 ... 3:
+            
+            matrix.setFont(font_5x7);
+            if (time_rtc.Hours >= 10) {
+                matrix.setCursor(0, 4);
+                matrix.print(time_rtc.Hours / 10);
+            }
+            matrix.setCursor(4, 4);
+            matrix.print(time_rtc.Hours % 10);
+
+            matrix.setCursor(0, 12);
+            matrix.print(time_rtc.minutes / 10);
+            matrix.setCursor(4, 12);
+            matrix.print(time_rtc.minutes % 10);
+            dots(3,db[kk::def_matrix]);
+            
+            break;
+            
+        }
+        
         return;
     }
     
     
 
     if (NTP.synced()) {
-        //Serial.print("NTP ");
-        //Serial.println(NTP.synced());
         Datime dt(NTP);
-        //Serial.println(dt.toString());
         switch (db[kk::clock_style].toInt()) {
             case 1:
                 matrix.setFont(gfx_font_3x5);
-
                 matrix.setCursor(1, 1);
                 if (dt.hour < 10) matrix.print(' ');
                 matrix.print(dt.hour);
-
                 matrix.setCursor(11, 1);
                 if (dt.minute < 10) matrix.print(0);
                 matrix.print(dt.minute);
-
                 dots(9, 9);
                 break;
 
             case 2:
                 matrix.setFont(font_3x5_diag);
-
                 matrix.setCursor(1, 1);
                 if (dt.hour < 10) matrix.print(' ');
                 matrix.print(dt.hour);
-
                 matrix.setCursor(11, 1);
                 if (dt.minute < 10) matrix.print(0);
                 matrix.print(dt.minute);
-
                 dots(9, 9);
                 break;
 
             case 3:
                 matrix.setFont(font_4x5);
-                //matrix.setFont(font_3x5);
                 if (dt.hour >= 10) {
                     matrix.setCursor(1, 1);
                     matrix.print(dt.hour / 10);
                 }
                 matrix.setCursor(5, 1);
                 matrix.print(dt.hour % 10);
-
                 matrix.setCursor(11, 1);
                 matrix.print(dt.minute / 10);
                 matrix.setCursor(15, 1);
                 matrix.print(dt.minute % 10);
-
                 dots(9, 10);
-                //dots(9, 9);
                 break;
             case 4:
-                //matrix.setFont(font_4x5);
                 matrix.setFont(font_3x5);
-
                 if (dt.hour >= 10) {
                     matrix.setCursor(1, 1);
                     matrix.print(dt.hour / 10);
                 }
                 matrix.setCursor(5, 1);
                 matrix.print(dt.hour % 10);
-
                 matrix.setCursor(11, 1);
                 matrix.print(dt.minute / 10);
                 matrix.setCursor(15, 1);
                 matrix.print(dt.minute % 10);
-
-                //dots(9, 10);
                 dots(9, 9);
                 break;
         }
@@ -270,9 +266,7 @@ static void drawBack() {
     uint8_t pal = db[kk::back_pal];
     uint8_t scale = db[kk::back_scale];
     uint8_t bright = db[kk::back_bright];
-
     matrix.setModeXY();
-
     switch (db[kk::back_mode].toInt()) {
         // none
         case 0:

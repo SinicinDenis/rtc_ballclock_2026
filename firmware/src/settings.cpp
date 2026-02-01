@@ -62,6 +62,8 @@ static void update(sets::Updater& u) {
         db[kk::rtc_set_m] = 0;
         db[kk::rtc_set_h] = 0;
     }
+    
+    
     db.update();
     if (ota.hasUpdate()) u.update("ota_update"_h, F("Доступно обновление. Обновить прошивку?"));
 
@@ -79,6 +81,9 @@ static void build(sets::Builder& b) {
             b.Switch(kk::clock_random, "Случайный цвет");
             b.Slider(kk::run_str_speed, "Скорость", 1, 5);
             b.Slider(kk::reverse_matrix, "Разворот", 0, 3);
+            //b.Slider(kk::cl_x, "x", 0, 10);
+            //b.Slider(kk::cl_y, "y", 0, 10);
+            //b.Slider(kk::def_matrix, "def", 0, 10);
             
         }
     }
@@ -88,7 +93,7 @@ static void build(sets::Builder& b) {
 
         if (db[kk::fon_setup]) {
 
-            if (b.Select(kk::back_mode, "Фон", "Нет;Градиент;Перлин;Тест")) b.reload();
+            if (b.Select(kk::back_mode, "Фон", "Нет;Градиент;Перлин")) b.reload();
 
             if (db[kk::back_mode].toInt()) {
                 b.Select(kk::back_pal, "Палитра", getPaletteList());
@@ -231,6 +236,9 @@ LP_TICKER([]() {
         db.init(kk::back_scale, 50);
         db.init(kk::back_angle, 60);
         db.init(kk::reverse_matrix, 0);
+        db.init(kk::cl_x, 0);
+        db.init(kk::cl_y, 0);
+        db.init(kk::def_matrix, 0);
         WiFiConnector.connect(db[kk::wifi_ssid], db[kk::wifi_pass]);
         sett.begin();
         sett.onBuild(build);

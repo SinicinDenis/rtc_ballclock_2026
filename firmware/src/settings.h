@@ -6,7 +6,7 @@
 
 extern GyverDBFile db;
 extern AutoOTA ota;
-extern BallMatrix matrix;
+//extern BallMatrix matrix;
 
 DB_KEYS(
     kk,
@@ -50,5 +50,8 @@ DB_KEYS(
     run_str_,
     run_str_in,
     run_str_speed,
-    reverse_matrix
+    reverse_matrix,
+    cl_x,
+    cl_y,
+    def_matrix
 );

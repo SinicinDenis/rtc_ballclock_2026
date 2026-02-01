@@ -1,5 +1,8 @@
 #pragma once
 #include <GyverGFX.h>
+#include "settings.h"
+extern GyverDBFile db;
+
 
 // BallClock Generator
 #define MX_LED_AMOUNT 128
@@ -7,6 +10,7 @@
 #define MX_XY_H 13
 #define MX_DIAG_W 20
 #define MX_DIAG_H 7
+
 
 // BallMatrix
 class BallMatrix : public GyverGFX {
@@ -49,9 +53,9 @@ class BallMatrix : public GyverGFX {
         _diag_mode = false;
         size(MX_XY_W, MX_XY_H);
     }
-    void setModeDiag() {
+    void setModeDiag(int8_t mx_w = 20, int8_t mx_h = 7) {
         _diag_mode = true;
-        size(MX_DIAG_W, MX_DIAG_H);
+        size(mx_w, mx_h);
     }
 
    private:

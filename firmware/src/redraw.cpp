@@ -11,6 +11,8 @@
 #include "font_4x5.h"
 #include "font_my.h"
 #include "font_vert.h"
+#include "font_vert_big.h"
+#include "font_hours.h"
 #include "matrix.h"
 #include "palettes.h"
 #include "settings.h"
@@ -182,12 +184,18 @@ static void drawClock() {
         case 2 ... 3:
             
             matrix.setFont(font_5x7);
-            if (time_rtc.Hours >= 10) {
-                matrix.setCursor(0, 4);
+            if (time_rtc.Hours < 10) {
+                matrix.setCursor(1, 3);
+                matrix.setFont(font_5x6);
+                matrix.print(time_rtc.Hours);
+            } else {
+                matrix.setFont(font_3x6);
+                matrix.setCursor(0, 3);
                 matrix.print(time_rtc.Hours / 10);
+                matrix.setCursor(4, 3);
+                matrix.print(time_rtc.Hours % 10);
             }
-            matrix.setCursor(4, 4);
-            matrix.print(time_rtc.Hours % 10);
+            matrix.setFont(font_5x7);
 
             matrix.setCursor(0, 12);
             matrix.print(time_rtc.minutes / 10);
